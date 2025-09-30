@@ -70,7 +70,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/workflows/{workflow}/delete', [DocumentWorkflowController::class, 'destroy'])->name('workflows.destroy');
 
     // Progress
-    Route::get('/documents/{id}', [TrackingController::class, 'show'])
+    Route::get('/progress/{id}', [DocumentProgressController::class, 'show'])
         ->whereNumber('id')->name('progress.show');
 
     // Update banyak progress dalam 1 dokumen
