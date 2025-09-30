@@ -1,0 +1,33 @@
+body {
+    background: linear-gradient(125deg, #293A6D, #ffc107);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Montserrat", sans-serif;
+}
+
+.login-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    padding: 2rem;
+    width: 100%;
+    max-width: 420px;
+}
+
+.form-control:focus {
+    border-color: #293A6D;
+    box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25);
+}
+
+.btn-custom {
+    background: #293A6D;
+    color: #fff;
+    font-weight: 600;
+}
+
+.btn-custom:hover {
+    background: #293A6D;
+    color: #fff;
+}
