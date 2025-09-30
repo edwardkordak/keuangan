@@ -28,7 +28,7 @@
             <div class="d-flex align-items-center gap-2">
                 <a href="/" style="text-decoration: none; color: aliceblue;">
                     <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo" style="height:36px;">
-                    <span class="fw-bold">MO-AKURAT</span>
+                    <span class="fw-bold">Mu-AKURAT</span>
                 </a>
             </div>
             <a href="{{ route('login') }}" class="btn btn-warning fw-semibold">
