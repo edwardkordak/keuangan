@@ -15,7 +15,9 @@ use App\Http\Controllers\DocumentWorkflowController;
 Route::get('/', function () {
     return view('pages.home');
 })->name('landing');
-
+Route::get('/test403', function () {
+    abort(403);
+});
 
 Route::get('/gup', [TrackingController::class, 'indexGup'])->name('gup');
 Route::get('/gup/search', [TrackingController::class, 'searchGup'])->name('gup.search');
@@ -42,7 +44,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    
+
     // Document Type
     Route::get('/types', [DocumentTypeController::class, 'index'])->name('types.index');
     Route::get('/types/create', [DocumentTypeController::class, 'create'])->name('types.create');
@@ -68,7 +70,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/workflows/{workflow}/delete', [DocumentWorkflowController::class, 'destroy'])->name('workflows.destroy');
 
     // Progress
-    Route::get('/progress/{document}', [DocumentProgressController::class, 'show'])->name('progress.show');
+    Route::get('/documents/{id}', [TrackingController::class, 'show'])
+        ->whereNumber('id')->name('progress.show');
 
     // Update banyak progress dalam 1 dokumen
     Route::post('/progress/{document}/update', [DocumentProgressController::class, 'updateMultiple'])->name('progress.updateMultiple');
