@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('document_workflows', function (Blueprint $table) {
-           $table->id();
+            $table->id();
             $table->foreignId('document_type_id')->constrained('document_types')->onDelete('cascade');
             $table->integer('step_number'); // urutan step
             $table->string('step_name');

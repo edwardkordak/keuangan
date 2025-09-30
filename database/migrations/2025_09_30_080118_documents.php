@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('documents', function (Blueprint $table) {
-           $table->id();
+            $table->id();
             $table->string('nama'); // nama pihak terkait
             $table->string('nama_dokumen');
             $table->foreignId('jenis_id')->constrained('document_types')->onDelete('cascade');

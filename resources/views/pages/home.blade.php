@@ -26,8 +26,10 @@
     <header class="py-3" style="background-color: #293A6D;">
         <div class="container d-flex justify-content-between align-items-center text-white">
             <div class="d-flex align-items-center gap-2">
-                <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo" style="height:36px;">
-                <span class="fw-bold">MO-AKURAT</span>
+                <a href="/" style="text-decoration: none; color: aliceblue;">
+                    <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo" style="height:36px;">
+                    <span class="fw-bold">MO-AKURAT</span>
+                </a>
             </div>
             <a href="{{ route('login') }}" class="btn btn-warning fw-semibold">
                 <i class="bi bi-box-arrow-in-right"></i> Login

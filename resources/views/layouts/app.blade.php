@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Keuangan</title>
+    <title>MO-AKURAT</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -28,8 +28,10 @@
     <header class="py-3" style="background-color: #293A6D;">
         <div class="container d-flex justify-content-between align-items-center text-white">
             <div class="d-flex align-items-center gap-2">
-                <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo" style="height:36px;">
-                <span class="fw-bold">MO-AKURAT</span>
+                <a href="/" style="text-decoration: none; color: aliceblue;">
+                    <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo" style="height:36px;">
+                    <span class="fw-bold">MO-AKURAT</span>
+                </a>
             </div>
             <a href="{{ route('login') }}" class="btn btn-warning fw-semibold">
                 <i class="bi bi-box-arrow-in-right"></i> Login
