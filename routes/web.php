@@ -29,7 +29,7 @@ Route::get('/kkp/search', [TrackingController::class, 'searchKkp'])->name('kkp.s
 // SPK 
 Route::get('/spk', [TrackingController::class, 'indexSpk'])->name('spk');
 Route::get('/spk/search', [TrackingController::class, 'searchSpk'])->name('spk.search');
-Route::get('/documents/{id}', [TrackingController::class, 'show'])->name('documents.show');
+Route::get('/dokumen/{id}', [TrackingController::class, 'show'])->name('documents.show');
 
 
 Route::middleware('guest')->group(function () {
