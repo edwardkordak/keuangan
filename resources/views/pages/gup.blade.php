@@ -36,18 +36,20 @@
         </div>
 
         <!-- Illustration Section -->
-        <div class="text-center">
+        <div class="text-center px-3">
             <div class="card shadow-sm border-0 rounded-4">
                 <div class="card-body">
                     <img src="{{ asset('assets/img/GUP.png') }}" alt="Tracking Illustration"
-                        class="img-fluid mx-auto d-block" style="max-width: 500px; height: auto;">
-                    <p class="mt-3 text-muted">
-                        Sistem pencarian dokumen <strong>GUP</strong> memudahkan Anda memonitor proses administrasi dengan
-                        cepat dan akurat.
+                        class="img-fluid mx-auto d-block w-100" style="max-width: 400px; height: auto;">
+
+                    <p class="mt-3 text-muted fs-6 fs-md-5">
+                        Sistem pencarian dokumen <strong>GUP</strong> memudahkan Anda
+                        memonitor proses administrasi dengan cepat dan akurat.
                     </p>
                 </div>
             </div>
         </div>
+
     </main>
 
     <!-- Extra Styling -->
