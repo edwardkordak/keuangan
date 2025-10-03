@@ -15,7 +15,7 @@
                             </div>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="#"><i class="feather icon-home"></i></a></li>
-                                <li class="breadcrumb-item">Dashboard</li>
+                                <li class="breadcrumb-item text-white">Dashboard</li>
                             </ul>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                                 <i class="feather icon-alert-triangle"></i>
                             </span>
                         </div>
-                        <h6 class="text-muted">Belum Selesai</h6>
+                        <h6 class="text-muted">Belum Ada Progress</h6>
                         <h2 class="fw-bold">{{ $unfinishedDocuments }}</h2>
                     </div>
                 </div>
