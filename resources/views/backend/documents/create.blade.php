@@ -15,7 +15,8 @@
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{ url('/') }}"><i
                                             class="feather icon-home"></i></a></li>
-                                <li class="breadcrumb-item text-white"><a href="{{ route('documents.index') }}">Dokumen</a></li>
+                                <li class="breadcrumb-item text-white"><a href="{{ route('documents.index') }}">Dokumen</a>
+                                </li>
                                 <li class="breadcrumb-item text-white">Tambah</li>
                             </ul>
                         </div>
@@ -36,14 +37,19 @@
                                 @csrf
 
                                 <div class="form-group">
-                                    <label for="nama">Nama</label>
-                                    <input type="text" name="nama" id="nama"
-                                        class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama') }}"
-                                        required>
+                                    <label for="nama">PPK Pengusul</label>
+                                    <select name="nama" id="nama"
+                                        class="form-control @error('nama') is-invalid @enderror" required>
+                                        <option value="">-- Pilih --</option>
+                                        <option value="PPK Perencanaan dan Program Satker" {{ old('nama') == 'PPK Perencanaan dan Program Satker' ? 'selected' : '' }}>PPK Perencanaan dan Program Satker</option>
+                                        <option value="PPK Ketatalaksana Satker" {{ old('nama') == 'PPK Ketatalaksana Satker' ? 'selected' : '' }}>PPK Ketatalaksana Satker</option>
+                                        <option value="PPK Penatagunaan SDA Satker" {{ old('nama') == 'PPK Penatagunaan SDA Satker' ? 'selected' : '' }}>PPK Penatagunaan SDA Satker</option>
+                                    </select>
                                     @error('nama')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+
 
                                 <div class="form-group">
                                     <label for="nama_dokumen">Nama Dokumen</label>

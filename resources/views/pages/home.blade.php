@@ -28,7 +28,7 @@
             <div class="d-flex align-items-center gap-2">
                 <a href="/" style="text-decoration: none; color: aliceblue;">
                     <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo" style="height:36px;">
-                    <span class="fw-bold">Mu-AKURAT</span>
+                    <span class="fw-bold">MO-AKURAT</span>
                 </a>
             </div>
             <a href="{{ route('login') }}" class="btn btn-warning fw-semibold">
@@ -58,7 +58,7 @@
             <div class="col-md-4">
                 <i class="bi bi-speedometer2 display-4 text-warning"></i>
                 <h5 class="mt-3">Cepat</h5>
-                <p>Pencarian dokumen keuangan yang akurat dan instan.</p>
+                <p>Pencarian dokumen keuangan yang akurat dan realtime.</p>
             </div>
             <div class="col-md-4">
                 <i class="bi bi-shield-lock-fill display-4 text-warning"></i>

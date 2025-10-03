@@ -42,7 +42,7 @@
             <div class="card shadow-sm border-0 rounded-4">
                 <div class="card-body">
                     <img src="{{ asset('assets/img/SPK.png') }}" alt="Tracking Illustration"
-                        class="img-fluid mx-auto d-block w-100" style="max-width: 400px; height: auto;">
+                        class="img-fluid mx-auto d-block w-100" style="max-width: 600px; height: auto;">
 
                     <p class="mt-3 text-muted fs-6 fs-md-5">
                         Sistem pencarian dokumen <strong>GUP</strong> memudahkan Anda
