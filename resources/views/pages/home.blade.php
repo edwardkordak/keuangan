@@ -68,7 +68,7 @@
             <div class="col-md-4">
                 <i class="bi bi-diagram-3-fill display-4 text-warning"></i>
                 <h5 class="mt-3">Terintegrasi</h5>
-                <p>Monitoring terpusat untuk semua jenis dokumen.</p>
+                <p>Monitoring terpusat untuk semua jenis dokumen keuangan.</p>
             </div>
         </div>
     </section>
