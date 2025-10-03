@@ -2,7 +2,7 @@
     <div class="m-header">
         <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
         <a href="#!" class="b-brand">
-            <span class="b-title">M0-AKURAT</span>
+            <span class="b-title">MO-AKURAT</span>
             <img src="{{ asset('assets/images/logo-icon.png') }}" alt="" class="logo-thumb">
         </a>
         <a href="#!" class="mob-toggler">
