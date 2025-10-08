@@ -43,20 +43,55 @@ class DocumentProgressController extends Controller
         return view('backend.progress.show', compact('document'));
     }
 
+    // public function updateMultiple(Request $request, $documentId)
+    // {
+    //     foreach ($request->progress as $id => $data) {
+    //         $progress = DocumentProgress::find($id);
+    //         if ($progress) {
+    //             $progress->update([
+    //                 'is_checked' => isset($data['is_checked']),
+    //                 'checked_at' => isset($data['is_checked']) ? now() : null,
+    //                 'description' => $data['description'] ?? null,
+    //                 'checked_by' => auth()->id(),
+    //             ]);
+    //         }
+    //     }
+
+    //     return redirect()->route('progress.show', $documentId)->with('success', 'Progress berhasil diperbarui');
+    // }
     public function updateMultiple(Request $request, $documentId)
     {
         foreach ($request->progress as $id => $data) {
             $progress = DocumentProgress::find($id);
+
             if ($progress) {
+                $isCheckedNow = isset($data['is_checked']);
+                $isCheckedBefore = $progress->is_checked;
+
+                // Default: tetap pakai waktu lama
+                $checkedAt = $progress->checked_at;
+
+                // Kalau sebelumnya belum dicentang dan sekarang dicentang, set waktu baru
+                if (!$isCheckedBefore && $isCheckedNow) {
+                    $checkedAt = now();
+                }
+
+                // Kalau sebelumnya dicentang dan sekarang di-uncheck, hapus waktu
+                if ($isCheckedBefore && !$isCheckedNow) {
+                    $checkedAt = null;
+                }
+
                 $progress->update([
-                    'is_checked' => isset($data['is_checked']),
-                    'checked_at' => isset($data['is_checked']) ? now() : null,
+                    'is_checked' => $isCheckedNow,
+                    'checked_at' => $checkedAt,
                     'description' => $data['description'] ?? null,
                     'checked_by' => auth()->id(),
                 ]);
             }
         }
 
-        return redirect()->route('progress.show', $documentId)->with('success', 'Progress berhasil diperbarui');
+        return redirect()
+            ->route('progress.show', $documentId)
+            ->with('success', 'Progress berhasil diperbarui');
     }
 }
