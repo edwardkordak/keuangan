@@ -44,6 +44,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard/chart-data', [DashboardController::class, 'chartData'])->name('dashboard.chartData');
 
     // Document Type
     Route::get('/types', [DocumentTypeController::class, 'index'])->name('types.index');

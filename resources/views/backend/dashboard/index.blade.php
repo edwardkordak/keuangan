@@ -57,8 +57,8 @@
                                 <i class="feather icon-check-circle"></i>
                             </span>
                         </div>
-                        <h6 class="text-muted">Progress Selesai</h6>
-                        <h2 class="fw-bold">{{ $progressPercentage }}%</h2>
+                        <h6 class="text-muted">Sudah SP2D</h6>
+                        <h2 class="fw-bold">{{ $completedDocuments }}</h2>
                     </div>
                 </div>
                 <!-- Dokumen Belum Selesai -->
@@ -69,7 +69,7 @@
                                 <i class="feather icon-alert-triangle"></i>
                             </span>
                         </div>
-                        <h6 class="text-muted">Belum Ada Progress</h6>
+                        <h6 class="text-muted">Belum SP2D</h6>
                         <h2 class="fw-bold">{{ $unfinishedDocuments }}</h2>
                     </div>
                 </div>
@@ -79,9 +79,19 @@
             <div class="row">
                 <div class="col-md-8 mb-4">
                     <div class="card shadow-sm border-0 rounded-4">
-                        <div class="card-header bg-light fw-bold">Dokumen per Jenis</div>
+                        <div class="card-header bg-light fw-bold d-flex justify-content-between align-items-center">
+                            <span>Progress per Step</span>
+                            <select id="docTypeSelect" class="form-select form-select-sm w-auto">
+                                <option value="">-- Pilih Jenis Dokumen --</option>
+                                @foreach ($documentsByType as $type)
+                                    <option value="{{ $type->id }}" {{ $type->id == 1 ? 'selected' : '' }}>
+                                        {{ $type->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="card-body">
-                            <canvas id="docBarChart" height="130"></canvas>
+                            <canvas id="docBarChart" height="150"></canvas>
                         </div>
                     </div>
                 </div>
@@ -171,25 +181,76 @@
     <!-- CDN Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        new Chart(document.getElementById('docBarChart'), {
-            type: 'bar',
-            data: {
-                labels: {!! json_encode($documentsByType->pluck('nama')) !!},
-                datasets: [{
-                    label: 'Jumlah Dokumen',
-                    data: {!! json_encode($documentsByType->pluck('documents_count')) !!},
-                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'],
-                    borderRadius: 6
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
-            }
+        let ctx = document.getElementById('docBarChart');
+        let chart;
+
+        // === FUNGSI PEMUAT DATA ===
+        function loadChartData(typeId) {
+            if (!typeId) return;
+
+            fetch(`{{ route('dashboard.chartData') }}?type_id=${typeId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const labels = data.map(d => d.step);
+                    const counts = data.map(d => d.count);
+
+                    if (chart) chart.destroy();
+
+                    chart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Jumlah Dokumen per Step',
+                                data: counts,
+                                backgroundColor: '#4e73df',
+                                borderRadius: 8
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return `${context.parsed.y} dokumen`;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Jumlah Dokumen'
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Tahapan (Step)'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(err => console.error('Error loading chart:', err));
+        }
+
+        // === EVENT DROPDOWN ===
+        document.getElementById('docTypeSelect').addEventListener('change', function() {
+            loadChartData(this.value);
+        });
+
+        // === LOAD DEFAULT DATA (document_type_id = 1) ===
+        document.addEventListener('DOMContentLoaded', function() {
+            const defaultType = 1; // SPK
+            loadChartData(defaultType);
         });
     </script>
 

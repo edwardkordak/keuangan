@@ -77,32 +77,6 @@ class DatabaseSeeder extends Seeder
 
         DB::table('document_workflows')->insert(array_merge($workflowsA, $workflowsB, $workflowsC));
 
-        // $documents = Document::factory()->count(50)->create();
 
-        // foreach ($documents as $doc) {
-        //     $workflows = DocumentWorkflow::where('document_type_id', $doc->jenis_id)
-        //         ->orderBy('step_number')
-        //         ->get();
-
-        //     if ($workflows->isEmpty()) {
-        //         continue;
-        //     }
-
-        //     $maxStepDone = rand(0, $workflows->count());
-
-
-        //     foreach ($workflows as $wf) {
-        //         $isChecked = $wf->step_number <= $maxStepDone;
-
-        //         DocumentProgress::create([
-        //             'document_id' => $doc->id,
-        //             'workflow_id' => $wf->id,
-        //             'is_checked' => $isChecked,
-        //             'checked_at' => $isChecked ? Carbon::now()->subDays(rand(1, 30)) : null,
-        //             'description' => $isChecked ? "Step {$wf->step_number} selesai" : null,
-        //             'checked_by' => $isChecked ? 1 : null, 
-        //         ]);
-        //     }
-        // }
     }
 }

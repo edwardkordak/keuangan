@@ -45,8 +45,8 @@
                         class="img-fluid mx-auto d-block w-100" style="max-width: 600px; height: auto;">
 
                     <p class="mt-3 text-muted fs-6 fs-md-5">
-                        Sistem pencarian dokumen <strong>GUP</strong> memudahkan Anda
-                        memonitor proses administrasi dengan cepat dan akurat.
+                        Proses Administrasi <strong>SPK</strong> oleh Bagian Keuangan Maks. 5 Hari Kerja (Sumber: PMK No.210
+                        Tahun 2022)
                     </p>
                 </div>
             </div>
