@@ -79,20 +79,40 @@ class DashboardController extends Controller
     {
         $typeId = $request->get('type_id');
 
-        // Ambil semua step untuk jenis dokumen tersebut
+        // Ambil semua step urut
         $steps = DocumentWorkflow::where('document_type_id', $typeId)
             ->orderBy('step_number')
-            ->get(['id', 'step_name']);
+            ->get(['id', 'step_name', 'step_number']);
 
-        // Hitung jumlah dokumen yang sudah mencapai tiap step
-        $chartData = $steps->map(function ($step) {
-            $count = DocumentProgress::where('workflow_id', $step->id)
-                ->where('is_checked', true)
-                ->count();
+        // Ambil semua progress dokumen yang sudah dicek
+        $progress = DocumentProgress::whereIn('workflow_id', $steps->pluck('id'))
+            ->where('is_checked', true)
+            ->get(['document_id', 'workflow_id']);
 
+        // Ambil step tertinggi per dokumen
+        $latestProgress = $progress
+            ->groupBy('document_id')
+            ->map(function ($items) use ($steps) {
+                // cari step_number tertinggi untuk dokumen ini
+                $maxWorkflow = $items
+                    ->map(function ($item) use ($steps) {
+                        return $steps->firstWhere('id', $item->workflow_id);
+                    })
+                    ->sortByDesc('step_number')
+                    ->first();
+
+                return $maxWorkflow ? $maxWorkflow->id : null;
+            })
+            ->filter(); // buang null
+
+        // Hitung jumlah dokumen di setiap step terakhir
+        $counts = collect($latestProgress)->countBy();
+
+        // Format untuk chart
+        $chartData = $steps->map(function ($step) use ($counts) {
             return [
                 'step'  => $step->step_name,
-                'count' => $count,
+                'count' => $counts[$step->id] ?? 0,
             ];
         });
 
