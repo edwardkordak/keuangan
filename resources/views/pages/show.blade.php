@@ -13,6 +13,7 @@
             <h4 class="mb-3 fw-bold" style="color:#293A6D;">
                 {{ $document->nama_dokumen }}
             </h4>
+            <p><strong>PPK:</strong> {{ $document->nama }}</p>
             <p><strong>Jenis:</strong>
                 <span class="badge px-3 py-2"
                       style="background-color:#FCB717; color:#293A6D;">
