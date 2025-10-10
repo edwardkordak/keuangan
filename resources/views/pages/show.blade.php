@@ -61,7 +61,7 @@
                                     ⏳ Belum selesai
                                 @endif
                             </small>
-                            <p>{{ $pg->workflow->step_description }}</p>
+                            <p>{{ $pg->description }}</p>
                         </div>
                     </li>
                 @endforeach
