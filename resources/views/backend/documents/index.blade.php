@@ -36,6 +36,50 @@
                         </div>
 
                         <div class="card-body table-border-style">
+                            {{-- Filter --}}
+                            <form method="GET" action="{{ route('documents.index') }}" style="margin-bottom: 15px;">
+                                <div
+                                    style="
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 10px;
+                                            flex-wrap: wrap;
+                                            ">
+
+
+                                    <select name="jenis_id" id="filterKategori"
+                                        style="
+                                                min-width: 220px;
+                                                padding: 6px 10px;
+                                                border-radius: 6px;
+                                                border: 1px solid #ccc;
+                                                background-color: #fff;
+                                                transition: all 0.2s ease;
+                                            "
+                                        onmouseover="this.style.borderColor='#007bff'"
+                                        onmouseout="this.style.borderColor='#ccc'">
+                                        <option value="">-- Semua Kategori --</option>
+                                        @foreach ($types as $type)
+                                            <option value="{{ $type->id }}"
+                                                {{ request('jenis_id') == $type->id ? 'selected' : '' }}>
+                                                {{ $type->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+
+                                </div>
+                            </form>
+
+                            {{-- Script untuk auto filter --}}
+                            <script>
+                                document.getElementById('filterKategori').addEventListener('change', function() {
+                                    this.form.submit();
+                                });
+                            </script>
+
+
+
                             <div class="table-responsive">
                                 <table class="table table-striped align-middle">
                                     <thead class="table-dark">
@@ -58,9 +102,9 @@
                                                 <td>{{ $doc->nama }}</td>
                                                 <td>{{ $doc->nama_dokumen }}</td>
                                                 <td>{{ $doc->type->nama ?? '-' }}</td>
-                                        
+
                                                 <td>{{ $doc->tanggal_diterima }}</td>
-                                                        <td>
+                                                <td>
                                                     @php
                                                         $total = $doc->progresses->count();
                                                         $done = $doc->progresses->where('is_checked', true)->count();

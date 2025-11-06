@@ -10,14 +10,30 @@ use Illuminate\Http\Request;
 
 class DocumentController extends Controller
 {
-    public function index()
-    {
-        $documents = Document::with('type')
-            ->latest()
-            ->paginate(10);
+    // public function index()
+    // {
+    //     $documents = Document::with('type')
+    //         ->latest()
+    //         ->paginate(10);
 
-        return view('backend.documents.index', compact('documents'));
+    //     return view('backend.documents.index', compact('documents'));
+    // }
+
+    public function index(Request $request)
+    {
+        $types = DocumentType::all();
+
+        $query = Document::with(['type', 'progresses'])->latest();
+
+        if ($request->filled('jenis_id')) {
+            $query->where('jenis_id', $request->jenis_id);
+        }
+        
+        $documents = $query->paginate(10)->appends($request->only('jenis_id'));
+
+        return view('backend.documents.index', compact('documents', 'types'));
     }
+
 
 
     public function create()
