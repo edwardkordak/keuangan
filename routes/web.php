@@ -18,6 +18,8 @@ Route::get('/', function () {
 Route::get('/test403', function () {
     abort(403);
 });
+Route::get('/debug-chart', [DashboardController::class, 'chartData']);
+
 
 Route::get('/gup', [TrackingController::class, 'indexGup'])->name('gup');
 Route::get('/gup/search', [TrackingController::class, 'searchGup'])->name('gup.search');

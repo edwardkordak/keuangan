@@ -26,6 +26,6 @@ class Document extends Model
 
     public function progresses(): HasMany
     {
-        return $this->hasMany(DocumentProgress::class);
+        return $this->hasMany(DocumentProgress::class, 'document_id');
     }
 }
