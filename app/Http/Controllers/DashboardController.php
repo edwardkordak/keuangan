@@ -75,107 +75,63 @@ class DashboardController extends Controller
         ));
     }
 
-    // public function chartData(Request $request)
-    // {
-    //     $typeId = $request->get('type_id');
+public function chartData(Request $request)
+{
+    $typeId = $request->get('type_id');
 
-    //     // Ambil semua step urut (misalnya: Dokumen diterima, Verifikasi, SP2D, dst)
-    //     $steps = DocumentWorkflow::where('document_type_id', $typeId)
-    //         ->orderBy('step_number')
-    //         ->get(['id', 'step_name', 'step_number']);
+    // Ambil semua step untuk tipe dokumen ini
+    $steps = DocumentWorkflow::where('document_type_id', $typeId)
+        ->orderBy('step_number')
+        ->get(['id', 'step_name', 'step_number']);
 
-    //     if ($steps->isEmpty()) {
-    //         return response()->json([]);
-    //     }
+    if ($steps->isEmpty()) {
+        return response()->json([]);
+    }
 
-    //     // Ambil semua dokumen dari tipe tersebut
-    //     $documents = Document::where('jenis_id', $typeId)
-    //         ->with(['progresses' => function ($q) use ($steps) {
-    //             $q->whereIn('workflow_id', $steps->pluck('id'))
-    //                 ->where('is_checked', true);
-    //         }])
-    //         ->get(['id']);
+    // Ambil semua dokumen berdasarkan tipe
+    $documents = Document::where('jenis_id', $typeId)
+        ->pluck('id');
 
-    //     // Tentukan step terakhir untuk setiap dokumen
-    //     $latestPerDoc = $documents->map(function ($doc) use ($steps) {
-    //         if ($doc->progresses->isEmpty()) {
-    //             // Belum ada progress -> anggap di step pertama
-    //             return $steps->first()->id;
-    //         }
+    // Ambil semua progress yang valid (checked = true)
+    $progresses = DocumentProgress::select('document_id', 'workflow_id')
+        ->whereIn('document_id', $documents)
+        ->where('is_checked', true)
+        ->get();
 
-    //         // Ambil progress dengan step_number tertinggi
-    //         $lastStep = $doc->progresses->map(function ($p) use ($steps) {
-    //             return $steps->firstWhere('id', $p->workflow_id);
-    //         })->sortByDesc('step_number')->first();
+    // Buat mapping step_number per workflow_id
+    $stepNumbers = $steps->pluck('step_number', 'id');
 
-    //         return $lastStep ? $lastStep->id : $steps->first()->id;
-    //     });
+    // --- Hitung step terakhir tiap dokumen ---
+    $latestStepPerDoc = $documents->map(function ($docId) use ($progresses, $stepNumbers, $steps) {
+        $docProgress = $progresses->where('document_id', $docId);
 
-    //     // Hitung jumlah per step terakhir
-    //     $counts = collect($latestPerDoc)->countBy();
-
-    //     // Format hasil untuk chart
-    //     $chartData = $steps->map(function ($step) use ($counts) {
-    //         return [
-    //             'step'  => $step->step_name,
-    //             'count' => $counts[$step->id] ?? 0,
-    //         ];
-    //     });
-
-    //     return response()->json($chartData);
-    // }
-
-    public function chartData(Request $request)
-    {
-        $typeId = $request->get('type_id');
-
-        // Ambil semua step urut berdasarkan workflow tipe dokumen
-        $steps = DocumentWorkflow::where('document_type_id', $typeId)
-            ->orderBy('step_number')
-            ->get(['id', 'step_name', 'step_number']);
-
-        if ($steps->isEmpty()) {
-            return response()->json([]);
+        if ($docProgress->isEmpty()) {
+            // Belum ada progress → step pertama
+            return $steps->first()->id;
         }
 
-        // Ambil semua dokumen berdasarkan tipe
-        $documents = Document::where('jenis_id', $typeId)
-            ->pluck('id');
+        // Ambil workflow_id dengan step_number tertinggi
+        $maxWorkflowId = $docProgress
+            ->pluck('workflow_id')
+            ->sortByDesc(fn($id) => $stepNumbers[$id] ?? 0)
+            ->first();
 
-        // Ambil semua progress valid untuk dokumen tersebut
-        $progress = DocumentProgress::whereIn('document_id', $documents)
-            ->whereIn('workflow_id', $steps->pluck('id'))
-            ->where('is_checked', true)
-            ->get(['document_id', 'workflow_id']);
+        return $maxWorkflowId ?: $steps->first()->id;
+    });
 
-        // Tentukan step terakhir per dokumen
-        $latestPerDoc = $documents->map(function ($docId) use ($progress, $steps) {
-            $docProgress = $progress->where('document_id', $docId);
+    // Hitung jumlah dokumen per step
+    $counts = collect($latestStepPerDoc)->countBy();
 
-            if ($docProgress->isEmpty()) {
-                // Tidak punya progress → step pertama
-                return $steps->first()->id;
-            }
+    // Format untuk chart
+    $chartData = $steps->map(function ($step) use ($counts) {
+        return [
+            'step'  => $step->step_name,
+            'count' => $counts[$step->id] ?? 0,
+        ];
+    });
 
-            // Cari step_number tertinggi untuk dokumen ini
-            $maxStep = $docProgress->map(function ($p) use ($steps) {
-                return $steps->firstWhere('id', $p->workflow_id);
-            })->filter()->sortByDesc('step_number')->first();
+    return response()->json($chartData);
+}
 
-            return $maxStep ? $maxStep->id : $steps->first()->id;
-        });
 
-        // Hitung jumlah dokumen per step terakhir
-        $counts = collect($latestPerDoc)->countBy();
-
-        // Format hasil untuk chart
-        $chartData = $steps->map(function ($step) use ($counts) {
-            return [
-                'step'  => $step->step_name,
-                'count' => $counts[$step->id] ?? 0,
-            ];
-        });
-
-        return response()->json($chartData);
-    }
 }

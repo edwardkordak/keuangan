@@ -28,8 +28,8 @@ class DocumentController extends Controller
         if ($request->filled('jenis_id')) {
             $query->where('jenis_id', $request->jenis_id);
         }
-        
-        $documents = $query->paginate(10)->appends($request->only('jenis_id'));
+    
+        $documents = $query->paginate(20)->appends($request->only('jenis_id'));
 
         return view('backend.documents.index', compact('documents', 'types'));
     }
